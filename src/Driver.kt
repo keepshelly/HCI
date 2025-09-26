@@ -4,9 +4,10 @@ class Driver(name: String, surname: String, second_name: String, val Prava: Stri
 
     override fun move() {
         Thread {
-            x += 15
-            y += 10
+            x += 20
+            y += 20
             println("Водитель $name едет прямо по: $x,$y")
         }.start()
     }
+
 }
