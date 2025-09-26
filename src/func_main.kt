@@ -8,13 +8,8 @@ fun main(){
         Human("Jessica", "Miller", "Marie", 444),
         Human("Christopher", "Davis", "Thomas", 444),
         Human("Amanda", "Garcia", "Louise", 444),
-        Human("Matthew", "Rodriguez", "Joseph", 444),
-        Human("Ashley", "Wilson", "Ann", 444),
-        Human("James", "Martinez", "William", 444),
-        Human("Stephanie", "Anderson", "Grace", 444),
-        Human("Daniel", "Taylor", "Charles", 444),
-        Human("Elizabeth", "Thomas", "Jane", 444),)
-    val Kir: Driver = Driver("Kirill", "Krakhmalnyy", "Vyacheslavovich","C")
+        Human("Matthew", "Rodriguez", "Joseph", 444),)
+    val Kir: Driver = Driver("Kirill", "Krakhmalnyy", "Vyacheslavovich","B")
     for (human in chels) {
         human.move()
     }
