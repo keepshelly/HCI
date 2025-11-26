@@ -17,5 +17,13 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MediaPlayerActivity::class.java)
             startActivity(intent)
         }
+<<<<<<< HEAD
+=======
+        val btnlocation = findViewById<Button>(R.id.btnlocation)
+        btnlocation.setOnClickListener {
+            val intent = Intent(this, LocationActivity::class.java)
+            startActivity(intent)
+        }
+>>>>>>> 2afc31f (Add files with lab - Location)
     }
 }

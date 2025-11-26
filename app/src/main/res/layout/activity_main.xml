@@ -17,4 +17,13 @@
         android:layout_height="wrap_content"
         android:text="Медиаплеер"
         android:textSize="20sp"/>
+<<<<<<< HEAD
+=======
+    <Button
+        android:id="@+id/btnlocation"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Местоположение"
+        android:textSize="20sp"/>
+>>>>>>> 2afc31f (Add files with lab - Location)
 </LinearLayout>
