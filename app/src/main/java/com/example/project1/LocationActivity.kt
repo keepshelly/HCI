@@ -30,14 +30,14 @@ class LocationActivity : AppCompatActivity(), LocationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
-        initViews()
+        view()
         locmanager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
     override fun onResume() {
         super.onResume()
-        updateCurrentLocation()
+        updlocation()
     }
-    private fun initViews() {
+    private fun view() {
         tvLatitude = findViewById(R.id.tvLatitude)
         tvLongitude = findViewById(R.id.tvLongitude)
         tvAltitude = findViewById(R.id.tvAltitude)
@@ -47,9 +47,9 @@ class LocationActivity : AppCompatActivity(), LocationListener {
             finish()
         }
     }
-    private fun updateCurrentLocation() {
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
+    private fun updlocation() {
+        if (checkperms()) {
+            if (provider()) {
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -58,7 +58,7 @@ class LocationActivity : AppCompatActivity(), LocationListener {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    requestPermissions()
+                    requestperms()
                     return
                 }
                 locmanager.requestLocationUpdates(
@@ -72,10 +72,10 @@ class LocationActivity : AppCompatActivity(), LocationListener {
                 Toast.makeText(applicationContext, "включи gps", Toast.LENGTH_SHORT).show()
             }
         } else {
-            requestPermissions()
+            requestperms()
         }
     }
-    private fun checkPermissions(): Boolean {
+    private fun checkperms(): Boolean {
         return ActivityCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -84,7 +84,7 @@ class LocationActivity : AppCompatActivity(), LocationListener {
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
-    private fun requestPermissions() {
+    private fun requestperms() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
@@ -94,7 +94,7 @@ class LocationActivity : AppCompatActivity(), LocationListener {
             PERMISSION_REQUEST_ACCESS_LOCATION
         )
     }
-    private fun isLocationEnabled(): Boolean {
+    private fun provider(): Boolean {
         return locmanager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
     override fun onRequestPermissionsResult(
@@ -105,25 +105,25 @@ class LocationActivity : AppCompatActivity(), LocationListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_ACCESS_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                updateCurrentLocation()
+                updlocation()
             } else {
                 Toast.makeText(this, "нет прав", Toast.LENGTH_SHORT).show()
             }
         }
     }
     override fun onLocationChanged(location: Location) {
-        updateLocationInfo(location)
+        updlocinfo(location)
         save(location)
         println("местоположение обновлено:${location.latitude}, ${location.longitude}")
     }
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-    private fun updateLocationInfo(location: Location) {
+    private fun updlocinfo(location: Location) {
         val latitude = location.latitude
         val longitude = location.longitude
         val altitude = location.altitude
         val time = location.time
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val currenttime = dateFormat.format(Date(time))
+        val dateformat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val currenttime = dateformat.format(Date(time))
         tvLatitude.text = "Широта: $latitude"
         tvLongitude.text = "Долгота: $longitude"
         tvAltitude.text = "Высота: ${"%.2f".format(altitude)}"
@@ -135,15 +135,15 @@ class LocationActivity : AppCompatActivity(), LocationListener {
                 put("latitude", location.latitude)
                 put("longitude", location.longitude)
                 put("altitude", location.altitude)
-                put("current_time", SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(location.time)))
+                put("current_time", SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date(location.time)))
             }
             val jsonstring = locationData.toString()
-            val downloadsdir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            val appdir = File(downloadsdir, "location")
+            val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val appdir = File(dir, "location")
             if (!appdir.exists()) {
                 appdir.mkdirs()
             }
-            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val timestamp = SimpleDateFormat("HHmmss", Locale.getDefault()).format(Date())
             val file = File(appdir, "location_$timestamp.json")
             FileOutputStream(file).use { outputStream ->
                 outputStream.write(jsonstring.toByteArray())
