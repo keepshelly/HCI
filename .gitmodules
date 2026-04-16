@@ -1,0 +1,3 @@
+[submodule "loc_cell_info"]
+	path = loc_cell_info
+	url = git@github.com:keepshelly/loc_cell_info.git
